@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  fastapi:
+    image: datascientest/fastapi:1.0.0
+    ports:
+      - "8000:8000"
+    networks:
+      - test-network
+
+  authentication_test:
+    image: authentication_test
+    depends_on:
+      - fastapi
+    environment:
+      - API_ADDRESS=fastapi
+      - API_PORT=8000
+    networks:
+      - test-network
+    volumes:
+      - .:/usr/src/app
+
+  authorization_test:
+    image: authorization_test
+    depends_on:
+      - fastapi
+    environment:
+      - API_ADDRESS=fastapi
+      - API_PORT=8000
+    networks:
+      - test-network
+    volumes:
+      - .:/usr/src/app
+
+  content_test:
+    image: content_test
+    depends_on:
+      - fastapi
+    environment:
+      - API_ADDRESS=fastapi
+      - API_PORT=8000
+    networks:
+      - test-network
+    volumes:
+      - .:/usr/src/app
+
+networks:
+  test-network:
+    driver: bridge
